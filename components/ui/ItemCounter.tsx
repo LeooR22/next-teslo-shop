@@ -1,4 +1,6 @@
-import { AddCircleOutline, RemoveCircleOutline } from "@mui/icons-material";
+import AddCircleOutline from "@mui/icons-material/AddCircleOutline";
+import RemoveCircleOutline from "@mui/icons-material/RemoveCircleOutline";
+
 import { Box, IconButton, Typography } from "@mui/material";
 import { FC } from "react";
 
