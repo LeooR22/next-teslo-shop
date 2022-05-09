@@ -1,5 +1,6 @@
 import { FC, useReducer, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useSession, signOut } from "next-auth/react";
 import Cookies from "js-cookie";
 
 import { tesloApi } from "../../api";
@@ -23,11 +24,19 @@ type Props = {
 
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
+  const { data, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    checkToken();
-  }, []);
+    if (status === "authenticated") {
+      console.log({ user: data?.user });
+      dispatch({ type: "[Auth] - Login", payload: data?.user as IUser });
+    }
+  }, [status, data]);
+
+  // useEffect(() => {
+  //   checkToken();
+  // }, []);
 
   const checkToken = async () => {
     if (!Cookies.get("token")) {
@@ -95,9 +104,21 @@ export const AuthProvider: FC<Props> = ({ children }) => {
   };
 
   const logout = () => {
-    Cookies.remove("token");
     Cookies.remove("cart");
-    router.reload();
+
+    Cookies.remove("firstName");
+    Cookies.remove("lastName");
+    Cookies.remove("address");
+    Cookies.remove("address2");
+    Cookies.remove("zip");
+    Cookies.remove("city");
+    Cookies.remove("country");
+    Cookies.remove("phone");
+
+    signOut();
+
+    // Cookies.remove("token");
+    // router.reload();
   };
 
   return (

@@ -1,22 +1,32 @@
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
-import { jwt } from "../../utils";
+import { getToken } from "next-auth/jwt";
 
-export async function middleware(req: NextRequest, ev: NextFetchEvent) {
-  const { token = "" } = req.cookies;
+export async function middleware(req: NextRequest | any, ev: NextFetchEvent) {
+  const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-  //   return new Response("No autorizado", {
-  //     status: 401,
-  //   });
+  console.log({ session });
 
-  try {
-    await jwt.isValidToken(token);
-    return NextResponse.next();
-  } catch (error) {
-    // return NextResponse.redirect("/auth/login?p=??")
-
+  if (!session) {
     const url = req.nextUrl.clone();
     url.pathname = "/auth/login";
     url.search = `p=${req.page.name}`;
     return NextResponse.redirect(url);
   }
+
+  return NextResponse.next();
+
+  // const { token = "" } = req.cookies;
+  // //   return new Response("No autorizado", {
+  // //     status: 401,
+  // //   });
+  // try {
+  //   await jwt.isValidToken(token);
+  //   return NextResponse.next();
+  // } catch (error) {
+  //   // return NextResponse.redirect("/auth/login?p=??")
+  //   const url = req.nextUrl.clone();
+  //   url.pathname = "/auth/login";
+  //   url.search = `p=${req.page.name}`;
+  //   return NextResponse.redirect(url);
+  // }
 }
