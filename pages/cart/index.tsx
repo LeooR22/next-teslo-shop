@@ -23,8 +23,6 @@ const CartPage = () => {
     }
   }, [isLoaded, cart, router]);
 
-  console.log(isLoaded);
-
   if (!isLoaded || cart.length === 0) {
     return <></>;
   }
