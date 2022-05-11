@@ -26,6 +26,7 @@ import LoginOutlined from "@mui/icons-material/LoginOutlined";
 import MaleOutlined from "@mui/icons-material/MaleOutlined";
 import SearchOutlined from "@mui/icons-material/SearchOutlined";
 import VpnKeyOutlined from "@mui/icons-material/VpnKeyOutlined";
+import DashboardOutlined from "@mui/icons-material/DashboardOutlined";
 
 export const SideMenu = () => {
   const router = useRouter();
@@ -157,35 +158,30 @@ export const SideMenu = () => {
           {user?.role === "admin" && (
             <>
               <Divider />
-              <ListSubheader
-                sx={{ display: user?.role === "admin" ? "" : "none" }}
-              >
-                Admin Panel
-              </ListSubheader>
+              <ListSubheader>Admin Panel</ListSubheader>
 
-              <ListItem
-                button
-                sx={{ display: user?.role === "admin" ? "" : "none" }}
-              >
+              <ListItem button onClick={() => navigateTo("/admin/")}>
+                <ListItemIcon>
+                  <DashboardOutlined />
+                </ListItemIcon>
+                <ListItemText primary={"Dashboard"} />
+              </ListItem>
+
+              <ListItem button>
                 <ListItemIcon>
                   <CategoryOutlined />
                 </ListItemIcon>
                 <ListItemText primary={"Productos"} />
               </ListItem>
-              <ListItem
-                button
-                sx={{ display: user?.role === "admin" ? "" : "none" }}
-              >
+
+              <ListItem button onClick={() => navigateTo("/admin/orders")}>
                 <ListItemIcon>
                   <ConfirmationNumberOutlined />
                 </ListItemIcon>
                 <ListItemText primary={"Ordenes"} />
               </ListItem>
 
-              <ListItem
-                button
-                sx={{ display: user?.role === "admin" ? "" : "none" }}
-              >
+              <ListItem button onClick={() => navigateTo("/admin/users")}>
                 <ListItemIcon>
                   <AdminPanelSettings />
                 </ListItemIcon>
