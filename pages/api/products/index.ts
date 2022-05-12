@@ -18,8 +18,6 @@ export default function handler(
         message: "Bad request",
       });
   }
-
-  res.status(200).json({ message: "Example" });
 }
 
 const getProducts = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
@@ -39,5 +37,15 @@ const getProducts = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
   await db.disconnect();
 
-  return res.status(200).json(products);
+  const updatedProducts = products.map((product) => {
+    product.images = product.images.map((image) => {
+      return image.includes("http")
+        ? image
+        : `${process.env.HOST_NAME}products/${image}`;
+    });
+
+    return product;
+  });
+
+  return res.status(200).json(updatedProducts);
 };
